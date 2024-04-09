@@ -8,9 +8,9 @@ class changeProfileController
 {
     async changeProfile(req, res, next)
     {
-        const id_user = req.user.id_user
-        const {nickname, email} = req.body
         try {
+            const id_user = req.user.id_user
+            const {nickname, email} = req.body
             if(nickname&&email)
             {
                 await sequelize.query(`UPDATE "users" SET nickname='${nickname}', email='${email}' WHERE id_user=${id_user}`)
@@ -18,6 +18,8 @@ class changeProfileController
             }
             if(nickname)
             {
+                const candidate = await User.findOne({where: {nickname}})
+                if(candidate) return next(ApiError.badRequest(`Пользователь с таким Nickname уже занят!`))
                 await sequelize.query(`UPDATE "users" SET nickname='${nickname}' WHERE id_user=${id_user}`)
                 return res.json({message: `Никнейм у пользователя с ID=${id_user} изменен`})
             }
@@ -28,7 +30,7 @@ class changeProfileController
                 await sequelize.query(`UPDATE "users" SET email='${email}' WHERE id_user=${id_user}`)
                 return res.json({message: `Email у пользователя с ID=${id_user} изменен`})
             }
-            if(!nickname&&!email) return next()
+            if(!nickname&&!email) return next(ApiError.badRequest("Нечего обновлять!"))
         } catch (error) {
             console.log(error)
             next(ApiError.badRequest('Не удалось изменить данные'))

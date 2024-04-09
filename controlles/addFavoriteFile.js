@@ -8,7 +8,8 @@ class addFavoriteFileController
 {
     async addFavoriteFile(req, res, next)
     {
-        const id_file = req.body
+        try {
+            const id_file = req.body
         if(!id_file) return next(ApiError.badRequest(`Вы не выбрали id_file!`))
         try {
             const candidate_file = await UserFiles.findOne({where: {id_file}})
@@ -27,6 +28,10 @@ class addFavoriteFileController
         } catch (error) {
             console.log(error)
             return next(ApiError.badRequest(`Сервак чуть не сдох, но это пока!`))
+        }
+        } catch (error) {
+            console.log(error)
+            return next(ApiError.badRequest("Сервер чуть не сдох"))
         }
     }
 }

@@ -13,7 +13,7 @@ const HOST=process.env.HOST
 const PORT = process.env.PORT
 const app = express()
 const server = http.createServer(app)
-const bib = 5
+
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
