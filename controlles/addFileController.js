@@ -59,17 +59,26 @@ class addFileController
             let path_storage = __dirname + '/storages/' + storage_name
             let path_file
             let filesize
-            let test
             fs.mkdir(path_storage, { recursive: true }, (error) => {
                 if (!error) {
                   console.log('Directory successfully created, or it already exists.');
                 }})
+            if(!file[1])
+            {
+                path_file = __dirname + "\\storages\\" + storage_name + '\\' + file.name
+                await file.mv(path_file)
+                
+                filesize = formatBytes(file.size)
+                const file_db = await UserFiles.create({filename: file.name, size_file: filesize, format_file: file.mimetype, userStorageIdStorage: storage_found.id_storage})
+                return res.send({messege: "File uploaded!"})
+            }
             for(let i = 0; i<file.length; i++)
             {
-                path_file = __dirname + "/storages/" + storage_name + '/' + file[i].name
+                path_file = __dirname + "\\storages\\" + storage_name + '\\' + file[i].name
                 await file[i].mv(path_file)
                 filesize = formatBytes(file[i].size)
                 const file_db = await UserFiles.create({filename: file[i].name, size_file: filesize, format_file: file[i].mimetype, userStorageIdStorage: storage_found.id_storage})
+                
             }
             return res.send({messege: "File uploaded!"})
         } catch (error) {
