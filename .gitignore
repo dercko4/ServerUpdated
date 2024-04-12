@@ -1,2 +1,2 @@
-/node_modules/*
-/controllers/storages/
+controllers/storages/
+node_modules/

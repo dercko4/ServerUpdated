@@ -11,7 +11,7 @@ const generateJwt = (id_user, nickname, email, role) =>
   (
     {id_user, nickname, email, role},
     process.env.SECRET_KEY,
-    {expiresIn: '24h'}
+    {expiresIn: '72h'}
   )
 }
 
@@ -47,6 +47,9 @@ class AuthController
                 console.log('Directory successfully created, or it already exists.');
               }})
       const token = generateJwt(user.id_user, user.nickname, user.email, user.role)
+      res.cookie("token", token, {
+        httpOnly: true
+      })
       return res.json({token})
     } catch (error) {
         console.log(error)
@@ -78,6 +81,10 @@ class AuthController
         return next(ApiError.internal('Указан неверный пароль'))
       }
       const token = generateJwt(user.id_user, user.nickname, user.email, user.role)
+      console.log(token)
+      res.cookie('token', token, {
+        httpOnly: true
+      })
       return res.json({token})
     } catch (error) {
         console.log(error)
@@ -85,5 +92,6 @@ class AuthController
     }
   }
 }
+
 
 module.exports = new AuthController()
