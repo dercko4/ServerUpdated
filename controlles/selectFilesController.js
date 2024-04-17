@@ -20,12 +20,26 @@ class selectFilesController
             else {
                 const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
                 const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`${order}`, 'DESC']]})
-                return res.json(user_files)
+                return res.json({user_files})
             }
         } catch (error) {
             console.log(error)
             return next(ApiError.badRequest("Сервер чуть не сдох"))
         }
+
+
+
+        
+    //     const id_user = req.user.id_user
+    //     const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
+    //     const user_files = await UserFiles.findAll({where: {id_file: 13}})
+    //     return res.json(user_files)
+    // }
+    // catch(e)
+    // {
+    //     console.log(e)
+    //     return next(ApiError.badRequest("Сервер чуть не сдох"))
+    // }
     }
 
     async searchFilename(req, res, next)

@@ -7,7 +7,7 @@ const router = require('./routes/index')
 const cors = require('cors')
 const fileUpload = require('express-fileupload');
 const {User, UserStorage} = require('./models/model')
-const cookieParser = require('cookie-parser')
+
 
 
 const http = require('http')
@@ -25,7 +25,6 @@ app.use(fileUpload({}));
 app.use(cors())
 app.use(express.json())
 app.use(express.static('public'));
-app.use(cookieParser())
 
 
 app.use('/cwh', router)

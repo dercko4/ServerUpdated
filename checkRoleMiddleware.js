@@ -6,7 +6,7 @@ if (req.method === "OPTIONS") {
 next()
 }
 try {
-    const token = req.headers.cookie.split("token=")[1] // Bearer asfasnfkajsfnjk
+    const token = req.headers.authorization.split(" ")[1] // Bearer asfasnfkajsfnjk
 if (!token) {
 return res.status(401).json({message: "Не авторизован"})
 }
