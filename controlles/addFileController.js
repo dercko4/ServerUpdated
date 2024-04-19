@@ -52,8 +52,9 @@ class addFileController
             const id_user = req.user.id_user
             const userStorageIdStorage = await UserStorage.findOne({where: {userIdUser: id_user}})
             if(!req.files) return next(ApiError.badRequest(`Не удалось взять файл!`))
-            if(!req.files.file_storage) return next(ApiError.badRequest(`Не удалось взять файл!`))
-            let file = req.files.file_storage
+            console.log(req.files)
+            if(!req.files.file) return next(ApiError.badRequest(`Не удалось взять файл!`))
+            let file = req.files.file
             const storage_found = await UserStorage.findOne({where: {userIdUser: id_user}})
             const storage_name = storage_found.id_storage
             let path_storage = __dirname + '/storages/' + storage_name
