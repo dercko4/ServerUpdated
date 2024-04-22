@@ -27,11 +27,11 @@ class addFavoriteFileController
             }
         } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest(`Сервак чуть не сдох, но это пока!`))
+            return next(ApiError.badRequest(`Сервак чуть не сгорел, но это пока!`))
         }
         } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
     }
 }

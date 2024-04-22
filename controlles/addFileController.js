@@ -26,8 +26,8 @@ class addFileController
             const id_user = req.user.id_user
             //const userStorageIdStorage = await UserStorage.findOne({where: {userIdUser: userIdUser}})
             if(!req.files) return next(ApiError.badRequest(`Не удалось взять файл!`))
-            if(!req.files.file_avatar) return next(ApiError.badRequest(`Не удалось взять файл!`))
-            const file = req.files.file_avatar
+            if(!req.files.file) return next(ApiError.badRequest(`Не удалось взять файл!`))
+            const file = req.files.file
             if(file[1]) return next(ApiError.badRequest(`Нельзя загружать несколько файлов!`))
             if(file.mimetype.split('/')[0]!=="image") return next(ApiError.badRequest(`Была загружена не фотография!`))
             const avatar_name = file.name
@@ -42,9 +42,10 @@ class addFileController
             return res.sendFile(path_avatar1)
         } catch (error) {
             console.log(e)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
     }
+
 
     async upload_file(req,res,next)
     {
@@ -84,7 +85,7 @@ class addFileController
             return res.send({messege: "File uploaded!"})
         } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
        
     }

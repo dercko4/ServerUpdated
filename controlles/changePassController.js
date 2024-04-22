@@ -27,7 +27,7 @@ class changePassController
             return res.json({messege: "Password has changed"})
                 } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
             }
         
     }

@@ -8,23 +8,33 @@ class selectFilesController
 {
     async selectAllFiles(req, res, next)
     {
-        try {   
+        try {
             const id_user = req.user.id_user
             const order = req.query.order
             if(!order)
             {
                 const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
                 const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}})
-                return res.json(user_files)
+                return res.json({user_files})
             }
             else {
-                const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
-                const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`${order}`, 'DESC']]})
-                return res.json({user_files})
+                if(order=="new")
+                {
+                    const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
+                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`createdAt`, 'DESC']]})
+                    return res.json({user_files})
+                }
+                if(order=="old")
+                {
+                    const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
+                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`createdAt`]]})
+                    return res.json({user_files})
+                }
+                
             }
         } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
 
 
@@ -38,7 +48,7 @@ class selectFilesController
     // catch(e)
     // {
     //     console.log(e)
-    //     return next(ApiError.badRequest("Сервер чуть не сдох"))
+    //     return next(ApiError.badRequest("Сервер чуть не сгорел"))
     // }
     }
 
@@ -52,8 +62,26 @@ class selectFilesController
             return res.json(search_file[0])
         } catch (error) {
             console.log(error)
-            return next(ApiError.badRequest("Сервер чуть не сдох"))
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
+    }
+
+
+    async fetch_avatar(req,res,next)
+    {
+        try {
+            const id_user = req.user.id_user
+            const candidate = await User.findOne({where: {id_user: id_user}})
+            if(!candidate) return next(ApiError.badRequest("Пользователь не найден!"))
+            const path_avatar = candidate.path_avatar
+            const split_path = path_avatar.split(`\\`).slice(-1)
+            console.log(split_path)
+            return res.json([`http://${process.env.HOST}/${split_path[0]}`])
+        } catch (error) {
+            console.log(error)
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
+        }
+       
     }
 
 }

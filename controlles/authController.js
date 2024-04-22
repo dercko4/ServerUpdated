@@ -53,7 +53,7 @@ class AuthController
       return res.json({token})
     } catch (error) {
         console.log(error)
-        return next(ApiError.badRequest("Сервер чуть не сдох"))
+        return next(ApiError.badRequest("Сервер чуть не сгорел"))
     }
     
   }
@@ -88,7 +88,7 @@ class AuthController
       return res.json({token})
     } catch (error) {
         console.log(error)
-        return next(ApiError.badRequest("Сервер чуть не сдох"))
+        return next(ApiError.badRequest("Сервер чуть не сгорел"))
     }
   }
 }

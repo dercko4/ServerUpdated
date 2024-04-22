@@ -8,5 +8,6 @@ const checkRoleMiddleware = require('../checkRoleMiddleware')
 
 router.get('/all_user_files', authMiddleware, checkRoleMiddleware("user"),selectFilesController.selectAllFiles)
 router.get('/filename_files', authMiddleware, checkRoleMiddleware("user"), selectFilesController.searchFilename)
+router.get('/avatar', authMiddleware, checkRoleMiddleware("user"), selectFilesController.fetch_avatar)
 
 module.exports = router
