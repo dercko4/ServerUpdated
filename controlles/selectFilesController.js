@@ -72,16 +72,31 @@ class selectFilesController
         try {
             const id_user = req.user.id_user
             const candidate = await User.findOne({where: {id_user: id_user}})
+            if(!candidate.path_avatar) return next(ApiError.badRequest("Нет аватарки!"))
             if(!candidate) return next(ApiError.badRequest("Пользователь не найден!"))
             const path_avatar = candidate.path_avatar
             const split_path = path_avatar.split(`\\`).slice(-1)
             console.log(split_path)
-            return res.json([`http://${process.env.HOST}/${split_path[0]}`])
+            return res.json([`http://${process.env.HOST}:${process.env.PORT}/avatars/${id_user}/${split_path[0]}`])
         } catch (error) {
             console.log(error)
             return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
        
+    }
+
+
+    async getProfile(req, res, next)
+
+    {
+        try {
+            const id_user = req.user.id_user
+            const candidate_user = await User.findOne({where: {id_user: id_user}})
+            return res.json(candidate_user)
+        } catch (error) {
+            console.log(error)
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
+        }
     }
 
 }
