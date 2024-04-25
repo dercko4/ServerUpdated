@@ -81,7 +81,6 @@ class AuthController
         return next(ApiError.internal('Указан неверный пароль'))
       }
       const token = generateJwt(user.id_user, user.nickname, user.email, user.role)
-      console.log(token)
       res.cookie('token', token, {
         httpOnly: true
       })

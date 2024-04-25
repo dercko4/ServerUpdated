@@ -14,20 +14,20 @@ class selectFilesController
             if(!order)
             {
                 const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
-                const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}})
+                const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage, filetype: "added"}})
                 return res.json({user_files})
             }
             else {
                 if(order=="new")
                 {
                     const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
-                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`createdAt`, 'DESC']]})
+                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage, filetype: "added"}, order: [[`createdAt`, 'DESC']]})
                     return res.json({user_files})
                 }
                 if(order=="old")
                 {
                     const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
-                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage}, order: [[`createdAt`]]})
+                    const user_files = await UserFiles.findAll({where: {userStorageIdStorage: candidate_user.id_storage, filetype: "added"}, order: [[`createdAt`]]})
                     return res.json({user_files})
                 }
                 
@@ -47,7 +47,7 @@ class selectFilesController
     // }
     // catch(e)
     // {
-    //     console.log(e)
+    //     
     //     return next(ApiError.badRequest("Сервер чуть не сгорел"))
     // }
     }
@@ -76,7 +76,6 @@ class selectFilesController
             if(!candidate) return next(ApiError.badRequest("Пользователь не найден!"))
             const path_avatar = candidate.path_avatar
             const split_path = path_avatar.split(`\\`).slice(-1)
-            console.log(split_path)
             return res.json([`http://${process.env.HOST}:${process.env.PORT}/avatars/${id_user}/${split_path[0]}`])
         } catch (error) {
             console.log(error)
@@ -93,6 +92,23 @@ class selectFilesController
             const id_user = req.user.id_user
             const candidate_user = await User.findOne({where: {id_user: id_user}})
             return res.json(candidate_user)
+        } catch (error) {
+            console.log(error)
+            return next(ApiError.badRequest("Сервер чуть не сгорел"))
+        }
+    }
+
+    async selectRemovedFiles(req, res, next)
+
+    {
+        try {
+            const id_user = req.user.id_user
+            const candidate_user = await UserStorage.findOne({where: {userIdUser: id_user}})
+            if(!candidate_user) return next(ApiError.badRequest(`Такого пользователя не существует!`))
+            const id_storage_user = candidate_user.id_storage
+        //const candidate_file = await sequelize.query(`UPDATE "user_files" SET filetype='remove' WHERE userStorageIdStorage='${id_storage_user}'`)
+            const candidate_file = await UserFiles.findAll({where: {userStorageIdStorage: id_storage_user, filetype: "remove"}})
+            return res.json(candidate_file)
         } catch (error) {
             console.log(error)
             return next(ApiError.badRequest("Сервер чуть не сгорел"))

@@ -13,6 +13,7 @@ const User = sequelize.define('users',{
 const UserFiles = sequelize.define('user_files', {
     id_file: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     filename: {type: DataTypes.STRING, allowNull: true},
+    path_file: {type: DataTypes.STRING},
     format_file: {type: DataTypes.STRING},
     size_file: {type: DataTypes.STRING},
     filetype: {type: DataTypes.STRING, defaultValue: "added"},

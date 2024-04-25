@@ -41,7 +41,6 @@ class addFileController
             const file_db = await sequelize.query(`UPDATE "users" SET path_avatar='${path_avatar1}' WHERE id_user='${id_user}'`)
             return res.sendFile(path_avatar1)
         } catch (error) {
-            console.log(e)
             return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
     }
@@ -53,7 +52,6 @@ class addFileController
             const id_user = req.user.id_user
             const userStorageIdStorage = await UserStorage.findOne({where: {userIdUser: id_user}})
             if(!req.files) return next(ApiError.badRequest(`Не удалось взять файл!`))
-            console.log(req.files)
             if(!req.files.file) return next(ApiError.badRequest(`Не удалось взять файл!`))
             let file = req.files.file
             const storage_found = await UserStorage.findOne({where: {userIdUser: id_user}})
@@ -71,7 +69,7 @@ class addFileController
                 await file.mv(path_file)
                 
                 filesize = formatBytes(file.size)
-                const file_db = await UserFiles.create({filename: file.name, size_file: filesize, format_file: file.mimetype, userStorageIdStorage: storage_found.id_storage})
+                const file_db = await UserFiles.create({filename: file.name, size_file: filesize, format_file: file.mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORt}/storages/${storage_name}/${file.name}`})
                 return res.send({messege: "File uploaded!"})
             }
             for(let i = 0; i<file.length; i++)
@@ -79,7 +77,7 @@ class addFileController
                 path_file = __dirname + "\\storages\\" + storage_name + '\\' + file[i].name
                 await file[i].mv(path_file)
                 filesize = formatBytes(file[i].size)
-                const file_db = await UserFiles.create({filename: file[i].name, size_file: filesize, format_file: file[i].mimetype, userStorageIdStorage: storage_found.id_storage})
+                const file_db = await UserFiles.create({filename: file[i].name, size_file: filesize, format_file: file[i].mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORt}/storages/${storage_name}/${file[i].name}`})
                 
             }
             return res.send({messege: "File uploaded!"})

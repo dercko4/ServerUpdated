@@ -26,11 +26,9 @@ class addFavoriteFileController
                 return res.json({messege: `Файл с id_file=${id_file} стал любимым!`}, unfavorite_file)
             }
         } catch (error) {
-            console.log(error)
             return next(ApiError.badRequest(`Сервак чуть не сгорел, но это пока!`))
         }
         } catch (error) {
-            console.log(error)
             return next(ApiError.badRequest("Сервер чуть не сгорел"))
         }
     }

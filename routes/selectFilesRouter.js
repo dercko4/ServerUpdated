@@ -10,7 +10,7 @@ router.get('/all_user_files', authMiddleware, checkRoleMiddleware("user"),select
 router.get('/filename_files', authMiddleware, checkRoleMiddleware("user"), selectFilesController.searchFilename)
 router.get('/avatar', authMiddleware, checkRoleMiddleware("user"), selectFilesController.fetch_avatar)
 router.get('/profile', authMiddleware, checkRoleMiddleware("user"), selectFilesController.getProfile)
-
+router.get('/removed_files', authMiddleware, checkRoleMiddleware("user"), selectFilesController.selectRemovedFiles)
 
 
 module.exports = router
