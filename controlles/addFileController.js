@@ -31,12 +31,12 @@ class addFileController
             if(file[1]) return next(ApiError.badRequest(`Нельзя загружать несколько файлов!`))
             if(file.mimetype.split('/')[0]!=="image") return next(ApiError.badRequest(`Была загружена не фотография!`))
             const avatar_name = file.name
-            let path_avatar = __dirname + "\\avatars\\" + id_user
+            let path_avatar = __dirname + "/avatars/" + id_user
             fs.mkdir(path_avatar, { recursive: true }, (error) => {
                 if (!error) {
                   console.log('Directory successfully created, or it already exists.');
                 }})
-            let path_avatar1 = path_avatar + '\\' +avatar_name
+            let path_avatar1 = path_avatar + '/' +avatar_name
             await file.mv(path_avatar1)
             const file_db = await sequelize.query(`UPDATE "users" SET path_avatar='${path_avatar1}' WHERE id_user='${id_user}'`)
             return res.sendFile(path_avatar1)
@@ -65,19 +65,19 @@ class addFileController
                 }})
             if(!file[1])
             {
-                path_file = __dirname + "\\storages\\" + storage_name + '\\' + file.name
+                path_file = __dirname + "/storages/" + storage_name + '/' + file.name
                 await file.mv(path_file)
                 
                 filesize = formatBytes(file.size)
-                const file_db = await UserFiles.create({filename: file.name, size_file: filesize, format_file: file.mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORt}/storages/${storage_name}/${file.name}`})
+                const file_db = await UserFiles.create({filename: file.name, size_file: filesize, format_file: file.mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORT}/storages/${storage_name}/${file.name}`})
                 return res.send({messege: "File uploaded!"})
             }
             for(let i = 0; i<file.length; i++)
             {
-                path_file = __dirname + "\\storages\\" + storage_name + '\\' + file[i].name
+                path_file = __dirname + "/storages/" + storage_name + '/' + file[i].name
                 await file[i].mv(path_file)
                 filesize = formatBytes(file[i].size)
-                const file_db = await UserFiles.create({filename: file[i].name, size_file: filesize, format_file: file[i].mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORt}/storages/${storage_name}/${file[i].name}`})
+                const file_db = await UserFiles.create({filename: file[i].name, size_file: filesize, format_file: file[i].mimetype, userStorageIdStorage: storage_found.id_storage, path_file: `http://${process.env.HOST}:${process.env.PORT}/storages/${storage_name}/${file[i].name}`})
                 
             }
             return res.send({messege: "File uploaded!"})
