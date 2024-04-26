@@ -7,7 +7,7 @@ const User = sequelize.define('users',{
     email: {type: DataTypes.STRING, allowNull: true, unique: true},
     password: {type: DataTypes.STRING, allowNull:true},
     role: {type: DataTypes.STRING, defaultValue: "user"},
-    path_avatar: {type: DataTypes.STRING}
+    path_avatar: {type: DataTypes.STRING, defaultValue: "U"}
 })
 
 const UserFiles = sequelize.define('user_files', {
