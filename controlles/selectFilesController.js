@@ -75,7 +75,7 @@ class selectFilesController
             if(!candidate.path_avatar) return next(ApiError.badRequest("Нет аватарки!"))
             if(!candidate) return next(ApiError.badRequest("Пользователь не найден!"))
             const path_avatar = candidate.path_avatar
-            const split_path = path_avatar.split(`\\`).slice(-1)
+            const split_path = path_avatar.split(`/`).slice(-1)
             return res.json([`http://${process.env.HOST}:${process.env.PORT}/avatars/${id_user}/${split_path[0]}`])
         } catch (error) {
             console.log(error)
