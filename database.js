@@ -6,7 +6,7 @@ module.exports=new Sequelize(
     "0000",
     {
         dialect:'postgres',
-        host: "127.0.0.1" || "localhost",
+        host: "192.168.0.27",
         pool: {
             max: 100,
             min: 0,
