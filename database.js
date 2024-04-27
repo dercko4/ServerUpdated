@@ -6,7 +6,7 @@ module.exports=new Sequelize(
     process.env.DB_PASSWORD,
     {
         dialect:'postgres',
-        host: process.env.DB_HOST,
+        host: process.env.DB_HOST || "localhost",
         pool: {
             max: 100,
             min: 0,
