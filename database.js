@@ -7,6 +7,12 @@ module.exports=new Sequelize(
     {
         dialect:'postgres',
         host: process.env.DB_HOST,
-        port: process.env.DB_PORT
+        port: process.env.DB_PORT,
+        pool: {
+            max: 100,
+            min: 0,
+            idle: 200000,
+            acquire: 1000000
+        }
     }
 )
