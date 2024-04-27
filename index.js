@@ -11,7 +11,7 @@ const {User, UserStorage} = require('./models/model')
 
 
 const http = require('http')
-const HOST=process.env.HOST
+const HOST="localhost"
 const PORT = 3500
 const app = express()
 const server = http.createServer(app)
