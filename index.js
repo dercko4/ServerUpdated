@@ -39,6 +39,8 @@ const start = async () => {
     try{
         await sequelize.authenticate()
         await sequelize.sync()
+        console.log(PORT, HOST)
+        console.log("Это пиздец")
         server.listen(PORT, HOST, () => console.log(`Server start on ${HOST}:${PORT}`))
     }
     catch(e){
