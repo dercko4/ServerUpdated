@@ -11,8 +11,8 @@ const {User, UserStorage} = require('./models/model')
 
 
 const http = require('http')
-const HOST="localhost"
-const PORT = 3500
+const HOST=process.env.HOST
+const PORT = process.env.PORT
 const app = express()
 const server = http.createServer(app)
 
@@ -30,8 +30,8 @@ app.use(express.static('controlles'))
 app.use('/cwh', router)
 app.get('/',async (req,res) =>
 {
-    const super1 = await UserStorage.findOne({where: {userIdUser: 3}})
-    res.json(super1.id_storage)
+    const super1 = await User.findAll()
+    return res.json({messege: super1.id_storage})
 }
 
 )
@@ -39,8 +39,6 @@ const start = async () => {
     try{
         await sequelize.authenticate()
         await sequelize.sync()
-        console.log(PORT, HOST)
-        console.log("Это пиздец")
         server.listen(PORT, HOST, () => console.log(`Server start on ${HOST}:${PORT}`))
     }
     catch(e){
